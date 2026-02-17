@@ -148,6 +148,45 @@ class ArrayFundamentals:
                     return False
         return True
 
+    def countPairs(self, arr, target):
+        # code here
+        # using 2 pointer
+        arr.sort()
+        n = len(arr)
+        left = 0
+        right = n - 1
+        pair_cnt = 0
+        while (left < right):
+            pair_sum = arr[left] + arr[right]
+            if pair_sum < target:
+                left += 1
+            elif pair_sum > target:
+                right -= 1
+            else:
+                # we need to count the frequency of nums[left],nums[right]
+                # since they are sorted
+                cnt1 = 0
+                cnt2 = 0
+                ele1 = arr[left]
+                ele2 = arr[right]
+                while (left <= right and arr[left] == ele1):
+                    cnt1 += 1
+                    left += 1
+                while (left <= right and arr[right] == ele2):
+                    cnt2 += 1
+                    right -= 1
+
+                # rather than while loops we can use map but every time we will create a map thats hell
+
+                # edge case
+                if ele1 == ele2:
+                    # it means the two pairs are same we need to se the number of ways to choose tw elements nc2
+                    pair_cnt += (cnt1 * (cnt1 - 1)) // 2
+                else:
+                    # both pairs are different , just multiply there cnt
+                    pair_cnt += cnt1 * cnt2
+        return pair_cnt
+
 
 # --------------------------------------------------
 # Testing Fundamentals
@@ -178,3 +217,5 @@ if __name__ == "__main__":
     print("First occurrence of 2:", obj.first_occurrence(arr, 2))
     print("Last occurrence of 2:", obj.last_occurrence(arr, 2))
     print("All unique:", obj.is_all_unique(arr))
+
+    print("Count pairs", obj.countPairs(arr, 3))
